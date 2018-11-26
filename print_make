@@ -1,0 +1,10 @@
+all: print
+
+lfsr: print.o
+	gcc -o $@ $+
+
+print.o : print.s
+	as -o $@ $<
+
+clean:
+	rm -vf print *.o

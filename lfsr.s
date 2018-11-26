@@ -6,7 +6,10 @@ seed:
 
 .balign 4
 tap:
-	.word 0x51800000
+	.word 0xA3000000
+
+.balign 4
+result: .asciz "The 32nd value is: %8x\n"
 
 .text
 
@@ -34,6 +37,7 @@ lfsr32:
 
 while_1:
 	add r2, #1 // period++
+	
 	cmp r0, r4 // while (lfsr != seed)
 	beq exit // exit if lfsr == seed
 	cmp r2, #32 // if (period < 32)
@@ -50,7 +54,14 @@ eq_1:
 	b while_1
 
 exit:
+	mov r5, r0
+	ldr r0, =result
+	mov r1, r5
+
+	bl printf
+
 	bx lr
 
 addr_of_seed : .word seed
 addr_of_tap : .word tap
+.global printf
